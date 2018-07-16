@@ -11,17 +11,17 @@ Globals:
 
 Resources:
 
-    HelloWorldFunction:
+    JiraGitHubIntegrationFunction:
         Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
         Properties:
-            CodeUri: artifacts/HelloWorld.zip
-            Handler: HelloWorld::HelloWorld.Function::FunctionHandler
+            CodeUri: artifacts/JiraGitHubIntegration.zip
+            Handler: JiraGitHubIntegration::JiraGitHubIntegration.Function::FunctionHandler
             Runtime: dotnetcore2.1
             Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
                 Variables:
                     PARAM1: VALUE
             Events:
-                HelloWorld:
+                JiraGitHubIntegration:
                     Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
                     Properties:
                         Path: /hello
@@ -29,14 +29,14 @@ Resources:
 
 Outputs:
 
-    HelloWorldApi:
+    JiraGitHubIntegrationApi:
       Description: "API Gateway endpoint URL for Prod stage for Hello World function"
       Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
 
-    HelloWorldFunction:
+    JiraGitHubIntegrationFunction:
       Description: "Hello World Lambda Function ARN"
-      Value: !GetAtt HelloWorldFunction.Arn
+      Value: !GetAtt JiraGitHubIntegrationFunction.Arn
 
-    HelloWorldFunctionIamRole:
+    JiraGitHubIntegrationFunctionIamRole:
       Description: "Implicit IAM Role created for Hello World function"
-      Value: !GetAtt HelloWorldFunctionRole.Arn
+      Value: !GetAtt JiraGitHubIntegrationFunctionRole.Arn

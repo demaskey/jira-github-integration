@@ -11,7 +11,7 @@ using Amazon.Lambda.Core;
 using Amazon.Lambda.TestUtilities;
 using Amazon.Lambda.APIGatewayEvents;
 
-namespace HelloWorld.Tests
+namespace JiraGitHubIntegration.Tests
 {
   public class FunctionTest
   {
@@ -29,7 +29,7 @@ namespace HelloWorld.Tests
     }
 
     [Fact]
-    public void TestHelloWorldFunctionHandler()
+    public void TestJiraGitHubIntegrationFunctionHandler()
     {
             TestLambdaContext context;
             APIGatewayProxyRequest request;

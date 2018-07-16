@@ -55,7 +55,7 @@ AWS Lambda C# runtime requires a flat folder with all dependencies including the
     FirstFunction:
         Type: AWS::Serverless::Function
         Properties:
-            CodeUri: src/HelloWorld/bin/Debug/netcoreapp2.0/publish            
+            CodeUri: src/JiraGitHubIntegration/bin/Debug/netcoreapp2.0/publish            
             ...
 ```
 
@@ -97,7 +97,7 @@ aws cloudformation describe-stacks \
 For testing our code, we use XUnit and you can use `dotnet test` to run tests defined under `test/`
 
 ```bash
-dotnet test test/HelloWorld.Test
+dotnet test test/JiraGitHubIntegration.Test
 ```
 
 Alternatively, you can use Cake. It discovers and executes all the tests.

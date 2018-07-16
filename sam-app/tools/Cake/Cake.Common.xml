@@ -11680,7 +11680,7 @@
             <param name="cakeScriptPath">The script file.</param>
             <example>
             <code>
-            CakeExecuteScript("./helloworld.cake");
+            CakeExecuteScript("./JiraGitHubIntegration.cake");
             </code>
             </example>
         </member>
@@ -11693,7 +11693,7 @@
             <param name="settings">The settings <see cref="T:Cake.Common.Tools.Cake.CakeSettings"/>.</param>
             <example>
             <code>
-            CakeExecuteScript("./helloworld.cake", new CakeSettings{ ToolPath="./Cake.exe" });
+            CakeExecuteScript("./JiraGitHubIntegration.cake", new CakeSettings{ ToolPath="./Cake.exe" });
             </code>
             </example>
         </member>

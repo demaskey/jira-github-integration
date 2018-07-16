@@ -15,7 +15,7 @@ var sourceDir = Directory("./src");
 var solutions = GetFiles("./**/*.sln");
 var projects = new []
 {
-    sourceDir.Path + "/HelloWorld/HelloWorld.csproj",
+    sourceDir.Path + "/JiraGitHubIntegration/JiraGitHubIntegration.csproj",
 };
 
 // BUILD OUTPUT DIRECTORIES
@@ -205,7 +205,7 @@ Task("Run-Local")
     {
         var settings = new ProcessSettings
         { 
-            Arguments = "local invoke \"HelloWorld\" -e event.json",
+            Arguments = "local invoke \"JiraGitHubIntegration\" -e event.json",
         };
         
         Information("Starting the SAM local...");
