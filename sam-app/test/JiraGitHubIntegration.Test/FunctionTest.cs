@@ -15,19 +15,6 @@ namespace JiraGitHubIntegration.Tests
 {
   public class FunctionTest
   {
-    private static readonly HttpClient client = new HttpClient();
-
-    private static async Task<string> GetCallingIP()
-    {
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Add("User-Agent", "AWS Lambda .Net Client");
-
-            var stringTask = client.GetStringAsync("http://checkip.amazonaws.com/").ConfigureAwait(continueOnCapturedContext:false);
-
-            var msg = await stringTask;
-            return msg.Replace("\n","");
-    }
-
     [Fact]
     public void TestJiraGitHubIntegrationFunctionHandler()
     {
@@ -37,11 +24,10 @@ namespace JiraGitHubIntegration.Tests
 
             request = new APIGatewayProxyRequest();
             context = new TestLambdaContext();
-            string location = GetCallingIP().Result;
             Dictionary<string, string> body = new Dictionary<string, string>
             {
                 { "message", "hello world" },
-                { "location", location },
+                { "location", "" },
             };
 
             var ExpectedResponse = new APIGatewayProxyResponse
