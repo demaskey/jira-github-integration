@@ -16,36 +16,84 @@ namespace JiraGitHubIntegration.Tests
   public class FunctionTest
   {
     [Fact]
-    public void TestJiraGitHubIntegrationFunctionHandler()
+    public void FunctionHandler_Post_ReturnBody_Test()
     {
-            TestLambdaContext context;
-            APIGatewayProxyRequest request;
-            APIGatewayProxyResponse response;
+      // arrange
+      TestLambdaContext context;
+      APIGatewayProxyRequest request;
+      APIGatewayProxyResponse response;
 
-            request = new APIGatewayProxyRequest();
-            context = new TestLambdaContext();
-            Dictionary<string, string> body = new Dictionary<string, string>
-            {
-                { "message", "hello world" },
-                { "location", "" },
-            };
+      Dictionary<string, string> body = new Dictionary<string, string>
+      {
+          { "message", "hello Mr. Hunt!" },
+          { "location", "" },
+      };
 
-            var ExpectedResponse = new APIGatewayProxyResponse
-            {
-                Body = JsonConvert.SerializeObject(body),
-                StatusCode = 200,
-                Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
-            };
+      request = new APIGatewayProxyRequest();
+      request.HttpMethod = "post";
+      request.Body = JsonConvert.SerializeObject(body);
+      context = new TestLambdaContext();
+      
 
-            var function = new Function();
-            response = function.FunctionHandler(request, context);
+      var ExpectedResponse = new APIGatewayProxyResponse
+      {
+          Body = JsonConvert.SerializeObject(body),
+          StatusCode = 200,
+          Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+      };
 
-            Console.WriteLine("Lambda Response: \n" + response.Body);
-            Console.WriteLine("Expected Response: \n" + ExpectedResponse.Body);
+      // act
+      var function = new Function();
+      response = function.FunctionHandler(request, context);
 
-            Assert.Equal(ExpectedResponse.Body, response.Body);
-            Assert.Equal(ExpectedResponse.Headers, response.Headers);
-            Assert.Equal(ExpectedResponse.StatusCode, response.StatusCode);
+      Console.WriteLine("Lambda Response: \n" + response.Body);
+      Console.WriteLine("Expected Response: \n" + ExpectedResponse.Body);
+
+      // assert
+      Assert.Equal(ExpectedResponse.StatusCode, response.StatusCode);
+      Assert.Equal(ExpectedResponse.Body, response.Body);
+      Assert.Equal(ExpectedResponse.Headers, response.Headers);
+    }
+
+    [Fact]
+    public void FunctionHandler_Get_Return405_Test()
+    {
+      // arrange
+      Dictionary<string, string> body = new Dictionary<string, string>
+      {
+          { "message", "hello Mr. Hunt!" },
+          { "location", "" },
+      };
+      var request = new APIGatewayProxyRequest();
+      request.HttpMethod = "get";
+      request.Body = JsonConvert.SerializeObject(body);
+
+      var context = new TestLambdaContext();
+
+      var expectedResponseBody = new Dictionary<string, string>
+      {
+        { "message", "Method Not Allowed" }
+      };
+
+      var expectedResponse = new APIGatewayProxyResponse
+      {
+        Body = JsonConvert.SerializeObject(expectedResponseBody),
+        StatusCode = 405,
+        Headers = new Dictionary<string, string>
+        {
+          { "Content-Type", "application/json" },
+          { "Allow", "post" }
+        }
+      };
+
+      // act
+      var function = new Function();
+      APIGatewayProxyResponse response = function.FunctionHandler(request, context);
+
+      // assert
+      Assert.Equal(expectedResponse.Body, response.Body);
+      Assert.Equal(expectedResponse.StatusCode, response.StatusCode);
+      Assert.Equal(expectedResponse.Headers, response.Headers);
     }
   }
 }
