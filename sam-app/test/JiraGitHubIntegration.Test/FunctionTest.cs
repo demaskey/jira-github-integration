@@ -15,51 +15,85 @@ namespace JiraGitHubIntegration.Tests
 {
   public class FunctionTest
   {
-    private static readonly HttpClient client = new HttpClient();
-
-    private static async Task<string> GetCallingIP()
+    [Fact]
+    public void FunctionHandler_Post_ReturnBody_Test()
     {
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Add("User-Agent", "AWS Lambda .Net Client");
+      // arrange
+      TestLambdaContext context;
+      APIGatewayProxyRequest request;
+      APIGatewayProxyResponse response;
 
-            var stringTask = client.GetStringAsync("http://checkip.amazonaws.com/").ConfigureAwait(continueOnCapturedContext:false);
+      Dictionary<string, string> body = new Dictionary<string, string>
+      {
+          { "message", "hello Mr. Hunt!" },
+          { "location", "" },
+      };
 
-            var msg = await stringTask;
-            return msg.Replace("\n","");
+      request = new APIGatewayProxyRequest();
+      request.HttpMethod = "post";
+      request.Body = JsonConvert.SerializeObject(body);
+      context = new TestLambdaContext();
+      
+
+      var ExpectedResponse = new APIGatewayProxyResponse
+      {
+          Body = JsonConvert.SerializeObject(body),
+          StatusCode = 200,
+          Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+      };
+
+      // act
+      var function = new Function();
+      response = function.FunctionHandler(request, context);
+
+      Console.WriteLine("Lambda Response: \n" + response.Body);
+      Console.WriteLine("Expected Response: \n" + ExpectedResponse.Body);
+
+      // assert
+      Assert.Equal(ExpectedResponse.StatusCode, response.StatusCode);
+      Assert.Equal(ExpectedResponse.Body, response.Body);
+      Assert.Equal(ExpectedResponse.Headers, response.Headers);
     }
 
     [Fact]
-    public void TestJiraGitHubIntegrationFunctionHandler()
+    public void FunctionHandler_Get_Return405_Test()
     {
-            TestLambdaContext context;
-            APIGatewayProxyRequest request;
-            APIGatewayProxyResponse response;
+      // arrange
+      Dictionary<string, string> body = new Dictionary<string, string>
+      {
+          { "message", "hello Mr. Hunt!" },
+          { "location", "" },
+      };
+      var request = new APIGatewayProxyRequest();
+      request.HttpMethod = "get";
+      request.Body = JsonConvert.SerializeObject(body);
 
-            request = new APIGatewayProxyRequest();
-            context = new TestLambdaContext();
-            string location = GetCallingIP().Result;
-            Dictionary<string, string> body = new Dictionary<string, string>
-            {
-                { "message", "hello world" },
-                { "location", location },
-            };
+      var context = new TestLambdaContext();
 
-            var ExpectedResponse = new APIGatewayProxyResponse
-            {
-                Body = JsonConvert.SerializeObject(body),
-                StatusCode = 200,
-                Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
-            };
+      var expectedResponseBody = new Dictionary<string, string>
+      {
+        { "message", "Method Not Allowed" }
+      };
 
-            var function = new Function();
-            response = function.FunctionHandler(request, context);
+      var expectedResponse = new APIGatewayProxyResponse
+      {
+        Body = JsonConvert.SerializeObject(expectedResponseBody),
+        StatusCode = 405,
+        Headers = new Dictionary<string, string>
+        {
+          { "Content-Type", "application/json" },
+          { "Allow", "post" }
+        }
+      };
 
-            Console.WriteLine("Lambda Response: \n" + response.Body);
-            Console.WriteLine("Expected Response: \n" + ExpectedResponse.Body);
+      // act
+      var function = new Function();
+      APIGatewayProxyResponse response = function.FunctionHandler(request, context);
 
-            Assert.Equal(ExpectedResponse.Body, response.Body);
-            Assert.Equal(ExpectedResponse.Headers, response.Headers);
-            Assert.Equal(ExpectedResponse.StatusCode, response.StatusCode);
+      // assert
+      Assert.Equal(expectedResponse.Body, response.Body);
+      Assert.Equal(expectedResponse.StatusCode, response.StatusCode);
+      Assert.Equal(expectedResponse.Headers, response.Headers);
     }
   }
 }

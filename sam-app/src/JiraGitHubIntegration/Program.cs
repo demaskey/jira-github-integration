@@ -21,18 +21,33 @@ namespace JiraGitHubIntegration
         public APIGatewayProxyResponse FunctionHandler(APIGatewayProxyRequest apigProxyEvent, ILambdaContext context)
         {
 
-            Dictionary<string, string> body = new Dictionary<string, string>
+            if(apigProxyEvent.HttpMethod == "post")
             {
-                { "message", "hello world" },
-                { "location", "" },
-            };
+                return new APIGatewayProxyResponse
+                {
+                    Body = apigProxyEvent.Body,
+                    StatusCode = 200,
+                    Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+                };
+            }
+            else
+            {
+                Dictionary<string, string> body = new Dictionary<string, string>
+                {
+                    {"message", "Method Not Allowed"}
+                };
 
-            return new APIGatewayProxyResponse
-            {
-                Body = JsonConvert.SerializeObject(body),
-                StatusCode = 200,
-                Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
-            };
+                return new APIGatewayProxyResponse
+                {
+                    Body = JsonConvert.SerializeObject(body),
+                    StatusCode = 405,
+                    Headers = new Dictionary<string, string> 
+                    { 
+                        { "Content-Type", "application/json" },
+                        { "Allow", "post" }
+                    }
+                };
+            }            
         }
     }
 }
