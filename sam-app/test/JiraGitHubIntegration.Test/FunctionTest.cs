@@ -23,21 +23,23 @@ namespace JiraGitHubIntegration.Tests
       APIGatewayProxyRequest request;
       APIGatewayProxyResponse response;
 
-      Dictionary<string, string> body = new Dictionary<string, string>
-      {
-          { "message", "hello Mr. Hunt!" },
-          { "location", "" },
-      };
+      // Dictionary<string, string> body = new Dictionary<string, string>
+      // {
+      //     { "message", "hello Mr. Hunt!" },
+      //     { "location", "" },
+      // };
+
+      string body = "{\"type\":\"Event\",\"public\":true}";
 
       request = new APIGatewayProxyRequest();
       request.HttpMethod = "post";
-      request.Body = JsonConvert.SerializeObject(body);
+      request.Body = body; //JsonConvert.SerializeObject(body);
       context = new TestLambdaContext();
       
 
       var ExpectedResponse = new APIGatewayProxyResponse
       {
-          Body = JsonConvert.SerializeObject(body),
+          Body = body, // JsonConvert.SerializeObject(body),
           StatusCode = 200,
           Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
       };

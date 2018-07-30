@@ -23,9 +23,11 @@ namespace JiraGitHubIntegration
 
             if(apigProxyEvent.HttpMethod == "post")
             {
+                Event bodyEvent = JsonConvert.DeserializeObject<Event>(apigProxyEvent.Body);
+
                 return new APIGatewayProxyResponse
                 {
-                    Body = apigProxyEvent.Body,
+                    Body = JsonConvert.SerializeObject(bodyEvent),
                     StatusCode = 200,
                     Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
                 };
