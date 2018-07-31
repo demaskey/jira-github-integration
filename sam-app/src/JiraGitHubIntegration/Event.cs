@@ -8,7 +8,8 @@ namespace JiraGitHubIntegration
         public string Type { get; set; }
         [JsonProperty("public")]
         public bool Public { get; set; }
-        // public string Payload { get; set; }
+        [JsonProperty("payload")]
+        public PullRequestReivewCommentEvent Payload { get; set; }
         // public string Repo { get; set; }
         // public string Actor { get; set; }
         // public string Org { get; set; }

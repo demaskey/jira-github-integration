@@ -1,9 +1,14 @@
+using Newtonsoft.Json;
+
 namespace JiraGitHubIntegration
 {
-    public class PullRequestReivewComment
+    public class PullRequestReivewCommentEvent
     {
-        public string action { get; set; }
-        public Comment comment { get; set; }
-        public PullRequest pull_request { get; set; }
+        [JsonProperty("action")]
+        public string Action { get; set; }
+        [JsonProperty("comment")]
+        public Comment Comment { get; set; }
+        [JsonProperty("pull_request")]
+        public PullRequest PullRequest { get; set; }
     }
 }
