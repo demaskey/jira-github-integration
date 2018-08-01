@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace JiraGitHubIntegration
 {
-    public class PullRequestReivewCommentEvent
+    public class PullRequestReviewCommentEvent
     {
         [JsonProperty("action")]
         public string Action { get; set; }

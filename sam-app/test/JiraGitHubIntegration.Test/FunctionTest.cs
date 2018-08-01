@@ -22,23 +22,23 @@ namespace JiraGitHubIntegration.Tests {
             Event body = new Event {
                 Type = "PullRequestReviewCommentEvent",
                 Public = true,
-                Payload = new PullRequestReivewCommentEvent {
-                Action = "created",
-                Comment = new Comment {
-                User = new User {
-                Login = "octocat"
-                },
-                Body = "Maybe you should use more emojji on this line.",
-                CreatedAt = DateTime.Parse ("2018-05-30T20:18:31Z")
-                },
-                PullRequest = new PullRequest {
-                Title = "Update the README with new information",
-                User = new User {
-                Login = "Codertocat"
-                },
-                Body = "This is a pretty simple change that we need to pull into master.",
-                CreatedAt = DateTime.Parse ("2018-05-30T20:18:30Z")
-                }
+                Payload = new PullRequestReviewCommentEvent {
+                    Action = "created",
+                    Comment = new Comment {
+                        User = new User {
+                            Login = "octocat"
+                        },
+                        Body = "Maybe you should use more emojji on this line.",
+                        CreatedAt = DateTime.Parse ("2018-05-30T20:18:31Z")
+                    },
+                    PullRequest = new PullRequest {
+                        Title = "Update the README with new information",
+                        User = new User {
+                            Login = "Codertocat"
+                        },
+                        Body = "This is a pretty simple change that we need to pull into master.",
+                        CreatedAt = DateTime.Parse ("2018-05-30T20:18:30Z")
+                    }
                 }
             };
 
@@ -66,41 +66,41 @@ namespace JiraGitHubIntegration.Tests {
             Assert.Equal (ExpectedResponse.Headers, response.Headers);
         }
 
-        [Fact]
-        public void FunctionHandler_Get_Return405_Test () {
-            // arrange
-            Dictionary<string, string> body = new Dictionary<string, string> { { "message", "hello Mr. Hunt!" },
-                { "location", "" },
-            };
-            var request = new APIGatewayProxyRequest ();
-            request.HttpMethod = "get";
-            request.Body = JsonConvert.SerializeObject (body);
+        // [Fact]
+        // public void FunctionHandler_Get_Return405_Test () {
+        //     // arrange
+        //     Dictionary<string, string> body = new Dictionary<string, string> { { "message", "hello Mr. Hunt!" },
+        //         { "location", "" },
+        //     };
+        //     var request = new APIGatewayProxyRequest ();
+        //     request.HttpMethod = "get";
+        //     request.Body = JsonConvert.SerializeObject (body);
 
-            var context = new TestLambdaContext ();
+        //     var context = new TestLambdaContext ();
 
-            var expectedResponseBody = new Dictionary<string, string> {
-                    {
-                    "message",
-                    "Method Not Allowed"
-                    }
-                };
+        //     var expectedResponseBody = new Dictionary<string, string> {
+        //             {
+        //             "message",
+        //             "Method Not Allowed"
+        //             }
+        //         };
 
-            var expectedResponse = new APIGatewayProxyResponse {
-                Body = JsonConvert.SerializeObject (expectedResponseBody),
-                StatusCode = 405,
-                Headers = new Dictionary<string, string> { { "Content-Type", "application/json" },
-                { "Allow", "post" }
-                }
-            };
+        //     var expectedResponse = new APIGatewayProxyResponse {
+        //         Body = JsonConvert.SerializeObject (expectedResponseBody),
+        //         StatusCode = 405,
+        //         Headers = new Dictionary<string, string> { { "Content-Type", "application/json" },
+        //         { "Allow", "post" }
+        //         }
+        //     };
 
-            // act
-            var function = new Function ();
-            APIGatewayProxyResponse response = function.FunctionHandler (request, context);
+        //     // act
+        //     var function = new Function ();
+        //     APIGatewayProxyResponse response = function.FunctionHandler (request, context);
 
-            // assert
-            Assert.Equal (expectedResponse.Body, response.Body);
-            Assert.Equal (expectedResponse.StatusCode, response.StatusCode);
-            Assert.Equal (expectedResponse.Headers, response.Headers);
-        }
+        //     // assert
+        //     Assert.Equal (expectedResponse.Body, response.Body);
+        //     Assert.Equal (expectedResponse.StatusCode, response.StatusCode);
+        //     Assert.Equal (expectedResponse.Headers, response.Headers);
+        // }
     }
 }
