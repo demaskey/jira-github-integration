@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace JiraGitHubIntegration
+namespace JiraGitHubIntegration.GitHubModels
 {
     public class Event
     {

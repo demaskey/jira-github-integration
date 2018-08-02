@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using System;
 
-namespace JiraGitHubIntegration
+namespace JiraGitHubIntegration.GitHubModels
 {
     public class Comment
     {

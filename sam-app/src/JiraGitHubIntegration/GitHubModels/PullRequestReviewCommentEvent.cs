@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace JiraGitHubIntegration
+namespace JiraGitHubIntegration.GitHubModels
 {
     public class PullRequestReviewCommentEvent
     {

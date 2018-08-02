@@ -10,6 +10,8 @@ using Amazon.Lambda.TestUtilities;
 using Newtonsoft.Json;
 using Xunit;
 
+using JiraGitHubIntegration.GitHubModels;
+
 namespace JiraGitHubIntegration.Tests {
     public class FunctionTest {
         [Fact]

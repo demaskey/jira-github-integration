@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace JiraGitHubIntegration {
+namespace JiraGitHubIntegration.GitHubModels {
     public class PullRequest {
         [JsonProperty("url")]
         public string Url { get; set; }
