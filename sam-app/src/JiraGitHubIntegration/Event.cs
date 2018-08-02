@@ -13,7 +13,6 @@ namespace JiraGitHubIntegration
         public Actor Actor { get; set; }
         [JsonProperty("repo")]
         public Repo Repo { get; set; }
-
         [JsonProperty("public")]
         public bool Public { get; set; }
         [JsonProperty("payload")]

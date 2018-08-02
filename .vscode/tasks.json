@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/sam-app/test/JiraGitHubIntegration.Test/JiraGitHubIntegration.Tests.csproj"
+                "${workspaceFolder}/sam-app/Solution.sln"
             ],
             "problemMatcher": "$msCompile"
         }

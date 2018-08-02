@@ -44,11 +44,11 @@ namespace JiraGitHubIntegration.Tests {
 
             request = new APIGatewayProxyRequest ();
             request.HttpMethod = "post";
-            request.Body = JsonConvert.SerializeObject (body);
+            request.Body = JsonConvert.SerializeObject (body, Formatting.Indented);
             context = new TestLambdaContext ();
 
             var ExpectedResponse = new APIGatewayProxyResponse {
-                Body = JsonConvert.SerializeObject (body),
+                Body = JsonConvert.SerializeObject (body, Formatting.Indented),
                 StatusCode = 200,
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
             };
@@ -65,42 +65,5 @@ namespace JiraGitHubIntegration.Tests {
             Assert.Equal (ExpectedResponse.Body, response.Body);
             Assert.Equal (ExpectedResponse.Headers, response.Headers);
         }
-
-        // [Fact]
-        // public void FunctionHandler_Get_Return405_Test () {
-        //     // arrange
-        //     Dictionary<string, string> body = new Dictionary<string, string> { { "message", "hello Mr. Hunt!" },
-        //         { "location", "" },
-        //     };
-        //     var request = new APIGatewayProxyRequest ();
-        //     request.HttpMethod = "get";
-        //     request.Body = JsonConvert.SerializeObject (body);
-
-        //     var context = new TestLambdaContext ();
-
-        //     var expectedResponseBody = new Dictionary<string, string> {
-        //             {
-        //             "message",
-        //             "Method Not Allowed"
-        //             }
-        //         };
-
-        //     var expectedResponse = new APIGatewayProxyResponse {
-        //         Body = JsonConvert.SerializeObject (expectedResponseBody),
-        //         StatusCode = 405,
-        //         Headers = new Dictionary<string, string> { { "Content-Type", "application/json" },
-        //         { "Allow", "post" }
-        //         }
-        //     };
-
-        //     // act
-        //     var function = new Function ();
-        //     APIGatewayProxyResponse response = function.FunctionHandler (request, context);
-
-        //     // assert
-        //     Assert.Equal (expectedResponse.Body, response.Body);
-        //     Assert.Equal (expectedResponse.StatusCode, response.StatusCode);
-        //     Assert.Equal (expectedResponse.Headers, response.Headers);
-        // }
     }
 }
