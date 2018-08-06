@@ -22,7 +22,7 @@
       "id": 206659693,
       "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwNjY1OTY5Mw==",
       "diff_hunk": "@@ -0,0 +1,19 @@\n+using Newtonsoft.Json;\n+\n+namespace JiraGitHubIntegration\n+{\n+    public class Event",
-      "path": "sam-app/src/JiraGitHubIntegration/Event.cs",
+      "path": "jiragithubintegration-app/src/JiraGitHubIntegration/Event.cs",
       "position": 5,
       "original_position": 5,
       "commit_id": "e09c494134256f5fc3609c8501a068e65708ff7c",

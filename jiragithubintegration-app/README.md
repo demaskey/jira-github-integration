@@ -1,6 +1,6 @@
-# sam-app
+# jiragithubintegration-app
 
-This is a sample template for sam-app
+This is a sample template for jiragithubintegration-app
 
 ## Requirements
 
@@ -36,7 +36,7 @@ sam local start-api
 ```yaml
 ...
 Events:
-    sam-app:
+    jiragithubintegration-app:
         Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
         Properties:
             Path: /hello
@@ -79,7 +79,7 @@ Next, the following command will create a Cloudformation Stack and deploy your S
 ```bash
 sam deploy \
     --template-file packaged.yaml \
-    --stack-name sam-app \
+    --stack-name jiragithubintegration-app \
     --capabilities CAPABILITY_IAM
 ```
 
@@ -89,7 +89,7 @@ After deployment is complete you can run the following command to retrieve the A
 
 ```bash
 aws cloudformation describe-stacks \
-    --stack-name sam-app \
+    --stack-name jiragithubintegration-app \
     --query 'Stacks[].Outputs'
 ```
 ## Testing
@@ -128,12 +128,12 @@ aws cloudformation package \
 
 aws cloudformation deploy \
     --template-file packaged.yaml \
-    --stack-name sam-app \
+    --stack-name jiragithubintegration-app \
     --capabilities CAPABILITY_IAM \
     --parameter-overrides MyParameterSample=MySampleValue
 
 aws cloudformation describe-stacks \
-    --stack-name sam-app --query 'Stacks[].Outputs'
+    --stack-name jiragithubintegration-app --query 'Stacks[].Outputs'
 ```
 
 ## Bringing to the next level

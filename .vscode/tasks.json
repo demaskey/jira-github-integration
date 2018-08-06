@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/sam-app/Solution.sln"
+                "${workspaceFolder}/jiragithubintegration-app/Solution.sln"
             ],
             "problemMatcher": "$msCompile"
         }

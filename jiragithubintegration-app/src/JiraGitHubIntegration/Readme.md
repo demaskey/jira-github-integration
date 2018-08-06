@@ -28,18 +28,18 @@ Once you have edited your function you can use the following command lines to bu
 
 Restore dependencies
 ```
-    cd "sam-app"
+    cd "jiragithubintegration-app"
     dotnet restore
 ```
 
 Execute unit tests
 ```
-    cd "sam-app/test/sam-app.Tests"
+    cd "jiragithubintegration-app/test/jiragithubintegration-app.Tests"
     dotnet test
 ```
 
 Deploy function to AWS Lambda
 ```
-    cd "sam-app/src/sam-app"
+    cd "jiragithubintegration-app/src/jiragithubintegration-app"
     dotnet lambda deploy-function
 ```
