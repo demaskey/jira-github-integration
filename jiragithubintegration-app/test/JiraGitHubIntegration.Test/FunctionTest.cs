@@ -9,8 +9,11 @@ using Amazon.Lambda.Core;
 using Amazon.Lambda.TestUtilities;
 using Newtonsoft.Json;
 using Xunit;
+using Moq;
 
 using JiraGitHubIntegration.GitHubModels;
+using JiraGitHubIntegration.JiraModels;
+using JiraGitHubIntegration.Repositories;
 
 namespace JiraGitHubIntegration.Tests {
     public class FunctionTest {
@@ -55,14 +58,21 @@ namespace JiraGitHubIntegration.Tests {
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
             };
 
+            var mockJiraRepo = new Mock<IJiraRepository>();
+            var mockJiraIssue = new Issue();
+            mockJiraRepo.Setup(x => x.GetIssue()).Returns(mockJiraIssue);
+            var function = new Function (mockJiraRepo.Object);
+
             // act
-            var function = new Function ();
+            
             response = function.FunctionHandler (request, context);
 
             Console.WriteLine ("Lambda Response: \n" + response.Body);
             Console.WriteLine ("Expected Response: \n" + ExpectedResponse.Body);
 
             // assert
+            mockJiraRepo.Verify(x=>x.GetIssue(), Times.AtMostOnce());
+
             Assert.Equal (ExpectedResponse.StatusCode, response.StatusCode);
             Assert.Equal (ExpectedResponse.Body, response.Body);
             Assert.Equal (ExpectedResponse.Headers, response.Headers);
