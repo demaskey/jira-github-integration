@@ -1,7 +1,7 @@
 using JiraGitHubIntegration.GitHubModels;
 
 namespace JiraGitHubIntegration.Services {
-    public interface IJiraIssueKeyNameConventionService {
+    public interface IJiraGitHubUtilityService {
         string GetIssueKeyFromBranchName (Event githubEvent);
     }
 }

@@ -53,7 +53,7 @@ namespace JiraGitHubIntegration.Tests {
             context = new TestLambdaContext ();
 
             var mockJiraIssueKey = "MAC-1234";
-            var mockJiraIssueKeyNameConventionSvc = new Mock<IJiraIssueKeyNameConventionService>();
+            var mockJiraIssueKeyNameConventionSvc = new Mock<IJiraGitHubUtilityService>();
             mockJiraIssueKeyNameConventionSvc.Setup(x=>x.GetIssueKeyFromBranchName(It.IsAny<Event>())).Returns(mockJiraIssueKey);
 
             var mockJiraRepo = new Mock<IJiraRepository> ();

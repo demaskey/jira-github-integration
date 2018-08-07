@@ -19,11 +19,11 @@ namespace JiraGitHubIntegration {
 
     public class Function {
         private readonly IJiraRepository _jiraRepository;
-        private readonly IJiraIssueKeyNameConventionService _jiraIssueKeyNameConventionSvc;
+        private readonly IJiraGitHubUtilityService _jiraGitHubUtilitySvc;
 
-        public Function (IJiraRepository jiraRepository, IJiraIssueKeyNameConventionService jiraIssueKeyNameConventionSvc) {
+        public Function (IJiraRepository jiraRepository, IJiraGitHubUtilityService jiraGitHubUtilitySvc) {
             _jiraRepository = jiraRepository;
-            _jiraIssueKeyNameConventionSvc = jiraIssueKeyNameConventionSvc;
+            _jiraGitHubUtilitySvc = jiraGitHubUtilitySvc;
         }
 
         public APIGatewayProxyResponse FunctionHandler (APIGatewayProxyRequest apigProxyEvent, ILambdaContext context) {
@@ -31,7 +31,7 @@ namespace JiraGitHubIntegration {
             var bodyEvent = JsonConvert.DeserializeObject<Event> (apigProxyEvent.Body);
 
             // get Jira Story Key from branch name convention
-            var issueKey = _jiraIssueKeyNameConventionSvc.GetIssueKeyFromBranchName (bodyEvent);
+            var issueKey = _jiraGitHubUtilitySvc.GetIssueKeyFromBranchName (bodyEvent);
 
             // get issue from Jira
             var issue = _jiraRepository.GetIssue (issueKey);
