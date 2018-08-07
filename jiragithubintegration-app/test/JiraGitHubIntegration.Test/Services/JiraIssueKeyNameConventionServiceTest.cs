@@ -3,7 +3,7 @@ using Xunit;
 using JiraGitHubIntegration.Services;
 using JiraGitHubIntegration.GitHubModels;
 
-namespace JiraGitHubIntegration.Tests 
+namespace JiraGitHubIntegration.Tests.Services 
 {
     public class JiraIssueKeyNameConventionServiceTest {
         [Fact]
