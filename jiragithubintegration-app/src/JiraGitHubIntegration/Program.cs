@@ -36,7 +36,9 @@ namespace JiraGitHubIntegration {
             // get issue from Jira
             var issue = _jiraRepository.GetIssue (issueKey);
 
-            // locally update github code review comment custom field
+            // update jira issue (custom field) with code review comment from GitHub
+            // new immutable issue object
+            issue = _jiraGitHubUtilitySvc.UpdateJiraIssueWithGitHubCodeReviewComment(bodyEvent, issue);
 
             // send update to jira
             _jiraRepository.UpdateIssue(issue);

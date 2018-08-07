@@ -10,10 +10,10 @@ using Amazon.Lambda.TestUtilities;
 using JiraGitHubIntegration.GitHubModels;
 using JiraGitHubIntegration.JiraModels;
 using JiraGitHubIntegration.Repositories;
+using JiraGitHubIntegration.Services;
 using Moq;
 using Newtonsoft.Json;
 using Xunit;
-using JiraGitHubIntegration.Services;
 
 namespace JiraGitHubIntegration.Tests {
     public class FunctionTest {
@@ -53,17 +53,20 @@ namespace JiraGitHubIntegration.Tests {
             context = new TestLambdaContext ();
 
             var mockJiraIssueKey = "MAC-1234";
-            var mockJiraIssueKeyNameConventionSvc = new Mock<IJiraGitHubUtilityService>();
-            mockJiraIssueKeyNameConventionSvc.Setup(x=>x.GetIssueKeyFromBranchName(It.IsAny<Event>())).Returns(mockJiraIssueKey);
+            var mockJiraGitHubUtilitySvc = new Mock<IJiraGitHubUtilityService> ();
+            mockJiraGitHubUtilitySvc.Setup (x => x.GetIssueKeyFromBranchName (It.IsAny<Event> ())).Returns (mockJiraIssueKey);
 
             var mockJiraRepo = new Mock<IJiraRepository> ();
             var mockJiraIssue = new Issue ();
             mockJiraRepo.Setup (x => x.GetIssue (mockJiraIssueKey)).Returns (mockJiraIssue);
-            mockJiraRepo.Setup(x=>x.UpdateIssue(mockJiraIssue));
+            mockJiraRepo.Setup (x => x.UpdateIssue (mockJiraIssue));
 
-            var function = new Function (mockJiraRepo.Object, mockJiraIssueKeyNameConventionSvc.Object);
+            var mockUpdatedJiraIssue = new Issue ();
+            mockJiraGitHubUtilitySvc.Setup (x => x.UpdateJiraIssueWithGitHubCodeReviewComment (It.IsAny<Event> (), It.Is<Issue> (y => y == mockJiraIssue))).Returns (mockUpdatedJiraIssue);
 
-             var ExpectedResponse = new APIGatewayProxyResponse {
+            var function = new Function (mockJiraRepo.Object, mockJiraGitHubUtilitySvc.Object);
+
+            var ExpectedResponse = new APIGatewayProxyResponse {
                 StatusCode = 200,
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
             };
@@ -76,9 +79,10 @@ namespace JiraGitHubIntegration.Tests {
             Console.WriteLine ("Expected Response: \n" + ExpectedResponse.Body);
 
             // assert
-            mockJiraIssueKeyNameConventionSvc.Verify(x=>x.GetIssueKeyFromBranchName(It.IsAny<Event>()), Times.Once());
-            mockJiraRepo.Verify (x => x.GetIssue (mockJiraIssueKey), Times.Once());
-            mockJiraRepo.Verify(x=>x.UpdateIssue(mockJiraIssue), Times.Once());
+            mockJiraGitHubUtilitySvc.Verify (x => x.GetIssueKeyFromBranchName (It.IsAny<Event> ()), Times.Once ());
+            mockJiraRepo.Verify (x => x.GetIssue (mockJiraIssueKey), Times.Once ());
+            mockJiraGitHubUtilitySvc.Verify (x => x.UpdateJiraIssueWithGitHubCodeReviewComment (It.IsAny<Event> (), It.Is<Issue> (y => y == mockJiraIssue)), Times.Once ());
+            mockJiraRepo.Verify (x => x.UpdateIssue (mockUpdatedJiraIssue), Times.Once ());
 
             Assert.Equal (ExpectedResponse.StatusCode, response.StatusCode);
             Assert.Equal (ExpectedResponse.Body, response.Body);
