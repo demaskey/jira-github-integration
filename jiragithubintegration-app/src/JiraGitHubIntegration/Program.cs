@@ -6,11 +6,11 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
-using Newtonsoft.Json;
-
 using JiraGitHubIntegration.GitHubModels;
 using JiraGitHubIntegration.JiraModels;
 using JiraGitHubIntegration.Repositories;
+using JiraGitHubIntegration.Services;
+using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly : LambdaSerializer (typeof (Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -19,23 +19,31 @@ namespace JiraGitHubIntegration {
 
     public class Function {
         private readonly IJiraRepository _jiraRepository;
+        private readonly IJiraIssueKeyNameConventionService _jiraIssueKeyNameConventionSvc;
 
-        public Function(IJiraRepository jiraRepository)
-        {
+        public Function (IJiraRepository jiraRepository, IJiraIssueKeyNameConventionService jiraIssueKeyNameConventionSvc) {
             _jiraRepository = jiraRepository;
+            _jiraIssueKeyNameConventionSvc = jiraIssueKeyNameConventionSvc;
         }
 
         public APIGatewayProxyResponse FunctionHandler (APIGatewayProxyRequest apigProxyEvent, ILambdaContext context) {
-            // deserialize Event payload
-            Event bodyEvent = JsonConvert.DeserializeObject<Event> (apigProxyEvent.Body);
+            // deserialize Event payload, payload is PullRequestReviewComment
+            var bodyEvent = JsonConvert.DeserializeObject<Event> (apigProxyEvent.Body);
+
+            // get Jira Story Key from branch name convention
+            var issueKey = _jiraIssueKeyNameConventionSvc.GetIssueKeyFromBranchName (bodyEvent);
 
             // get issue from Jira
-            Issue issue = _jiraRepository.GetIssue();
+            var issue = _jiraRepository.GetIssue (issueKey);
+
+            // locally update github code review comment custom field
+
+            // send update to jira
+            _jiraRepository.UpdateIssue(issue);
 
             return new APIGatewayProxyResponse {
-                Body = JsonConvert.SerializeObject (bodyEvent, Formatting.Indented),
-                StatusCode = 200,
-                Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+                    StatusCode = 200,
+                    Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
             };
         }
     }

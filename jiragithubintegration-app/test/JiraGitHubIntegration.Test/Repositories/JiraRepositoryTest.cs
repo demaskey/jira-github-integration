@@ -1,23 +1,34 @@
-using Xunit;
-using Moq;
-
-using JiraGitHubIntegration.Repositories;
 using JiraGitHubIntegration.JiraModels;
+using JiraGitHubIntegration.Repositories;
+using Moq;
+using Xunit;
 
-namespace JiraGitHubIntegration.Test.Repositories
-{
+namespace JiraGitHubIntegration.Tests.Repositories {
     public class JiraRepositoryTest {
         [Fact]
-        public void GetIssue_Test()
-        {
+        public void GetIssue_Test () {
             // Arrange
-            var jiraRepo = new JiraRepository();
-            
+            var jiraRepo = new JiraRepository ();
+            var mockIssueKey = "MAC-1234";
+
             // Act
-            var issue = jiraRepo.GetIssue();
-            
+            var issue = jiraRepo.GetIssue (mockIssueKey);
+
             // Assert
-            Assert.NotNull(issue);
+            Assert.NotNull (issue);
+        }
+
+        [Fact]
+        public void UpdateIssue_Test()
+        {
+            // Arrage
+            var mockIssue = new Issue();
+            var jiraRepo = new JiraRepository();
+        
+            // Act
+            jiraRepo.UpdateIssue(mockIssue);
+        
+            // Assert
         }
     }
 }
